@@ -1,19 +1,13 @@
 import { useQuery } from '@tanstack/react-query';
-import { createFileRoute } from '@tanstack/react-router'
-import { useState } from 'react';
+import { createFileRoute } from '@tanstack/react-router';
 
 export const Route = createFileRoute('/fetches/apiFetches/chuckFetch')({
   component: chuckFetch
-})
+});
 
-
-function chuckFetch(){
-
- const [num, setNum] = useState(0);
-
-
-  const { isLoading, error, data, isError } = useQuery({
-    queryKey: [num],
+function chuckFetch() {
+  const { isLoading, error, data, isError, refetch } = useQuery({
+    queryKey: ["lol"],
     queryFn: async () => {
       const response = await fetch(`https://api.chucknorris.io/jokes/random`);
       if (!response.ok) {
@@ -24,7 +18,6 @@ function chuckFetch(){
     },
   });
 
-
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -33,12 +26,9 @@ function chuckFetch(){
     return <div>Error: {error.message}</div>;
   }
 
- 
   return (
     <div>
-      <button onClick={() => setNum(num + 1)}>
-        Click me
-      </button>
+      <button onClick={() => refetch()}>Click me</button>
       {data && (
         <>
           <h1>{data.value}</h1>
@@ -46,6 +36,4 @@ function chuckFetch(){
       )}
     </div>
   );
-
-
 }
